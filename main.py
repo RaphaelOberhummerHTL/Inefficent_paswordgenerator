@@ -1,5 +1,11 @@
-import passwordgenerator
 import time
+
+from passwordgenerator import password
+from translationchaos import choose_language
+from translationchaos import translation_chaos
+from story import choose_genre
+from story import choose_startingwords
+from story import generate_story
 
 def get_user_mode() -> str:
     print("\nWhat would you like to do?")
@@ -18,8 +24,11 @@ def get_user_mode() -> str:
 if __name__ =="__main__":
     start:float = time.time()
     story: str = ""
-    output_choice: str
-    translations_rounds: int
+    output_choice: str = ""
+    translations_rounds: int = 0
+
+    words:str = choose_startingwords()
+    genre:str = choose_genre()
 
     output_choice = get_user_mode()
     print(output_choice)
@@ -29,11 +38,11 @@ if __name__ =="__main__":
         translations_rounds = 40
 
     if output_choice == "story":
-        output_language = passwordgenerator.translationchaos.choose_language()
-    story = passwordgenerator.translationchaos.story.generate_story()
+        output_language = choose_language()
+    story = generate_story(genre, words)
     if output_choice == "story":
-        passwordgenerator.translationchaos.translation_chaos(story, translations_rounds, output_language)
+        translation_chaos(story, translations_rounds, output_language)
     else:
-        print(f"Your password is: {passwordgenerator.password(story, translations_rounds)}")
+        print(f"Your password is: {password(story, translations_rounds, genre, words)}")
     end:float = time.time()
     print(f"The script worked for{end-start}")

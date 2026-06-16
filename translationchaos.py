@@ -56,7 +56,7 @@ def translation_chaos(start_wort: str, runden: int, outputlanguage:str) -> None:
         new_text:str = ""
         language:str = ""
         
-        # Sicherheitsnetz: Wiederholen, bis Ollama eine Antwort liefert
+        # Ollama can give an empty string back, and this loop garantees that the translation will happen successfully
         while new_text == "":
             language = random.choice(story.LANGUAGES)
             new_text = translate_lokal(old_text, language)

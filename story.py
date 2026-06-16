@@ -120,11 +120,7 @@ GENRE: dict[str, str] = {
     "14": "Cosmic Horror"
 }
 
-def generate_story() -> str:
-    words: str = ""
-    genre: str = ""
-    choice: str = ""
-
+def choose_genre() -> str:
     while choice not in GENRE:
         for nummer, genre in GENRE.items():
             print(f"{nummer}: {genre}")
@@ -132,13 +128,29 @@ def generate_story() -> str:
         if choice not in GENRE:
             print("Invalid choice. Please type a number from the list.")
 
-    genre = GENRE[choice]
-    
+    return GENRE[choice]
+
+def choose_startingwords() -> str:
+    word_list = []
     print("With which random words should the story get generated?")
+    
     for i in range(5):
-        words += input(f"Please input the word {i+1}:")
-        if i < 4:
-            words += "; "
+        while True:
+            # Eingabe einlesen und direkt die Leerzeichen am Anfang/Ende wegschneiden
+            user_input = input(f"Please input the word {i+1}: ").strip()
+            
+            if user_input == "":
+                print("An empty string or a string containing only spaces doesn't carry any meaning.")
+                # Die Schleife läuft weiter, bis eine gültige Eingabe kommt
+                continue  
+            
+            # Wenn das Wort gültig ist, fügen wir es der Liste hinzu und brechen die while-Schleife ab
+            word_list.append(user_input)
+            break
+            
+    return "; ".join(word_list)
+
+def generate_story(genre:str, words:str) -> str:
     
     prompt = (
         f"You are a multilingual author who writes brilliant stories worldwide.\n"
