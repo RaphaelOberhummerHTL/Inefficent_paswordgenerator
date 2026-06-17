@@ -1,5 +1,8 @@
 import ollama
 import random
+import psutil
+import datetime
+import time
 
 import story
 
@@ -59,6 +62,11 @@ def translation_saveguard(text: str, language: str = "") -> str:
     while new_text == "":
         # If no language was predefined, pick a random one from the supported list for this iteration
         if not given_language:
+            # Seed = current_time + uptime 
+            #      = time.time() + (time.time() - boot_time)
+            #      = 2 * time.time() - boot_time
+            # This combination leverages the current time and translation time from your system for a more unpredictable seed.
+            random.seed(2*time.time() - datetime.datetime.fromtimestamp(psutil.boot_time()).timestamp())
             language = random.choice(story.LANGUAGES)
         new_text = translate_lokal(text, language)
 
@@ -123,6 +131,13 @@ def translation_chaos(start_wort: str, runden: int, outputlanguage: str) -> None
     
     # Multi-round random translation loop
     for i in range(runden):
+
+        # Seed = current_time + uptime 
+        #      = time.time() + (time.time() - boot_time)
+        #      = 2 * time.time() - boot_time
+        # This combination leverages the current time and translation time from your system for a more unpredictable seed.
+        random.seed(2*time.time() - datetime.datetime.fromtimestamp(psutil.boot_time()).timestamp())
+
         # Select a random language and track it for the print statement
         language = random.choice(story.LANGUAGES) 
         

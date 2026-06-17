@@ -5,6 +5,9 @@ from random import random
 from random import seed
 from random import gauss
 from random import choice
+from random import seed
+import datetime
+import psutil
 
 import math
 import time
@@ -82,20 +85,19 @@ def password(story: str, runden: int, genre: str, words: str, passwordlength: in
 
     # Keep iterating until the output password reaches the requested length limit
     while len(password) < length_of_password:
+        seed(2*time.time() - datetime.datetime.fromtimestamp(psutil.boot_time()).timestamp())
+
         for i in range(len(translated_story)-1):
-            
-            # Continuously update state baseline based on exact execution runtime epoch timestamps
-            seed(time.time())
             
             # Conditional block safeguarding list bounds to check characters across the string
             if i < len(translated_story)-1:
                 # Heavy polynomial algebraic manipulation combining character neighbors alongside safe pseudo-random steps
-                number = (ord(translated_story[i])**3 + ord(translated_story[i+1])**3 + randint(ord(translated_story[i]), ord(translated_story[i+1])**2)**3)**(1/3) - number
-                number = random()*(number**3)+randint((-ord(translated_story[i])), ord(translated_story[i]))*number**2-gauss(ord(translated_story[i+1]), (ord(translated_story[i+1])/(30*math.pi)))*number-randint(randint(0,ord(translated_story[randint(0,len(translated_story)-1)])),randint(ord(translated_story[randint(0,len(translated_story)-1)])%5,ord(translated_story[randint(0,len(translated_story)-1)-1])**2)**2)
+                number = (ord(translated_story[randint(0, len(story)-1)])**3 + ord(translated_story[randint(0, len(story)-1)])**3 + randint(ord(translated_story[randint(0, len(story)-1)]), ord(translated_story[randint(0, len(story)-1)])**2)**3)**(1/3) - number
+                number = random()*(number**3)+randint((-ord(translated_story[randint(0, len(story)-1)])), ord(translated_story[randint(0, len(story)-1)]))*number**2-gauss(ord(translated_story[randint(0, len(story)-1)]), (ord(translated_story[randint(0, len(story)-1)])/(30*math.pi)))*number-randint(randint(0,ord(translated_story[randint(0,len(translated_story)-1)])),randint(ord(translated_story[randint(0,len(translated_story)-1)])%5,ord(translated_story[randint(0,len(translated_story)-1)-1])**2)**2)
             else:
                 # Alternative mathematical path calculation fallback handling the string boundary edges safely
-                number = (ord(translated_story[i])**3 + ord(translated_story[i-1])**3 + randint(ord(translated_story[i]), ord(translated_story[i-1])**2)**3)**(1/3)
-                number = random()*(number**3)+randint((-ord(translated_story[i])), ord(translated_story[i]))*number**2-gauss(ord(translated_story[i-1]), ord(translated_story[i-1])/(30*math.pi))*number-randint(randint(0,ord(translated_story[randint(0,len(translated_story)-1)])),randint(ord(translated_story[randint(0,len(translated_story)-1)]),2*ord(translated_story[randint(0,len(translated_story)-1)])))
+                number = (ord(translated_story[randint(0, len(story)-1)])**3 + ord(translated_story[i-1])**3 + randint(ord(translated_story[randint(0, len(story)-1)]), ord(translated_story[i-1])**2)**3)**(1/3)
+                number = random()*(number**3)+randint((-ord(translated_story[randint(0, len(story)-1)])), ord(translated_story[randint(0, len(story)-1)]))*number**2-gauss(ord(translated_story[i-1]), ord(translated_story[i-1])/(30*math.pi))*number-randint(randint(0,ord(translated_story[randint(0,len(translated_story)-1)])),randint(ord(translated_story[randint(0,len(translated_story)-1)]),2*ord(translated_story[randint(0,len(translated_story)-1)])))
             
             # Set computed high-entropy float number as seed for the final character picker sequence step
             seed(number)

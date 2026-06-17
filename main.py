@@ -62,7 +62,7 @@ if __name__ =="__main__":
 
     # Core generation step: Create the baseline story context using the chosen options
     story = generate_story(genre, words)
-    
+
     # Direct execution branch based on user selection mode
     if output_choice == "story":
         # Mode 1: Walk the user through the dynamic translation breakdown step by step
