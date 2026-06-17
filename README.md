@@ -4,7 +4,7 @@ A totally necessary, venture-capital-baiting, and buzzword-packed password gener
 
 Instead of using traditional, lightweight, and actually secure random number generators that complete the task in microseconds without consuming the electrical grid of a small nation, this project leverages **local AI translation loops (the "Telephone Game")** to burn CPU cycles and extract password entropy from pure AI confusion. 
 
-I built it because I hope that the nonexisting stockprise of my non-existing company jumps into the sky because I say, that I created a passwordgenerator that uses AI, unless I'm too late for that hype.
+I built it because I hope that the nonexisting stock price of my non-existing company jumps into the sky because I say, that I created a passwordgenerator that uses AI, unless I'm too late for that hype.
 
 Are the generated passwords secure? I don't know, I'm not a security researcher, but I can say, that I have a passwordgenerator with AI and the investors will invest in my non-existing company, so I don't care.
 
@@ -60,7 +60,7 @@ ollama run gemma4:12b
 
 Install the official Ollama integration wrapper:
 ```bash
-pip install ollama
+pip install ollama psutil
 ```
 
 ### 🎮 Usage
@@ -82,12 +82,6 @@ python main.py
 
 ### 📊 Performance Disclaimer
 
-This password generator is intentionally inefficient.
+While modern cryptographic infrastructure values speed and proven security, this system deliberately spins up billions of mathematical matrix multiplications across your computer hardware over dozens of full neural-network inference cycles.
 
-While a standard password generator completes its task in roughly 0.00005 seconds, this generator spins up billions of mathematical matrix multiplications across your computer hardware over dozens of full neural-network inference cycles. Depending on your GPU/CPU capabilities and your translation loop settings, generating a single password may take anywhere from a few seconds to several hours.
-
-It is the ultimate expression of using a sledgehammer to crack a nut—but it ensures a completely unique, unpredictable entropy footprint.
-
-### ⚖️ License
-
-This project is open-source. Use it for educational entertainment, conceptual cryptographic exploration, or heating your room via processor workloads.
+Depending on your hardware architecture (CPU vs. GPU) your translation loop settings and chosen model, generating a single password may take anywhere from a few seconds to several hours. It provides a completely unique, unpredictable entropy footprint born from AI cognitive degradation—at the cost of traditional computing efficiency.
