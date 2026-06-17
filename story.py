@@ -1,108 +1,79 @@
 import ollama
 
-MODEL = 'gemma4:12b'
+# --- GLOBAL CONFIGURATION VARIABLES ---
 
+# MODEL (str): The specific local LLM checkpoint identifier to execute via Ollama.
+# Note: 'gemma4:12b' balances inference speed and linguistic accuracy on higher midrange gaming hardware or higher.
+# 
+# OPEN SOURCE NOTE ON MODEL SWAPPING:
+# If you change this model identifier (e.g., to a different generation or a model from another company),
+# please manually verify that your chosen model supports the languages listed in the `LANGUAGES` list.
+# Unsupported languages may result in incoherent translations or hallucinations.
+MODEL = 'gemma4:12b' 
+
+# LANGUAGES (list[str]): A curated collection of global target languages categorized by region.
+# Used by the translation engine to introduce semantic variations and structural linguistic changes.
+#
+# EXTENSIBILITY NOTE:
+# This list is completely open to modification. If your chosen MODEL supports additional regional 
+# languages, dialects, or historical scripts not listed below, you can freely append them directly 
+# to this list (e.g., "Esperanto", "Latin"). Conversely, feel free to remove any languages that 
+# your custom model struggles to process accurately.
 LANGUAGES: list[str] = [
-    #"Zentraleuropa / Westeuropa": 
+    # --- CENTRAL & WESTERN EUROPE ---
     "German", "English", "French", "Dutch", "Romansh",
-    # Comment: This group includes Germanic (German, English, Dutch) 
-    # and Romance languages (French, Romansh). Romansh is a 
-    # minority language, mainly spoken in the Swiss canton of Grisons (Graubünden).
-    
-    # "Nordeuropa / Skandinavien": [
-    "Swedish", "Norwegian", "Danish", "Icelandic", "Finnish",
-    # Comment: Swedish, Norwegian, Danish, and Icelandic belong to the 
-    # North Germanic languages (with Icelandic being closest to Old Norse). 
-    # Finnish, however, is not a Germanic language; it belongs to the Finno-Ugric 
-    # language family and is therefore more closely related to Hungarian.
+    # Comment: Romansh is a minority language that yields wonderful translation glitches.
 
-    #"Osteuropa": [
-    "Russian", "Ukrainian", "Polish", "Czech", "Romanian", 
-    "Bulgarian", "Croatian", "Hungarian",
-    # Comment: The majority here are Slavic languages (Russian, Ukrainian, Polish, 
-    # Czech, Bulgarian, Croatian). Romanian is an interesting exception, as it is a 
-    # Romance language with strong Slavic influences. Hungarian—like Finnish—is 
-    # a non-Indo-European, Finno-Ugric language in the middle of Eastern Europe.
+    # --- NORTHERN EUROPE & SCANDINAVIA ---
+    "Swedish", "Norwegian", "Finnish", "Icelandic",
+    # Comment: Finnish is non-Indo-European; Icelandic is extremely close to Old Norse.
 
-    #"Südeuropa / Südwesteuropa": [
-    "Italian", "Spanish", "Portuguese", "Greek", "Latin", "Catalan", "Basque",
-    # Comment: Shaped by the Roman Empire, we find here the major Romance 
-    # languages as well as Latin as their common root and Catalan as a regional language. 
-    # Greek forms its own, very ancient branch of the Indo-European family. 
-    # Basque (in the Spain/France border region) is an absolute mystery: it is an 
-    # isolated language that is unrelated to any other known living language.
+    # --- EASTERN EUROPE & BALTICS ---
+    "Russian", "Polish", "Czech", "Romanian", "Hungarian", "Lithuanian", "Estonian",
+    # Comment: Hungarian and Estonian break sentence structures due to their Finno-Ugric grammar.
 
-    # "Baltikum": 
-    "Latvian", "Lithuanian", "Estonian",
-    # Comment: Latvian and Lithuanian form the Baltic branch of the Indo-European 
-    # languages and are considered linguistically very archaic (conservative). 
-    # Estonian belongs to this group geographically, but linguistically it is closely related to Finnish.
+    # --- SOUTHERN EUROPE ---
+    "Italian", "Spanish", "Portuguese", "Greek", "Catalan", "Basque",
+    # Comment: Basque is a language isolate – perfect for creating maximum chaos!
 
-    # "Keltischer Raum (Britische Inseln)": [
-    "Irish", "Welsh", "Gaelic",
-    # Comment: These languages originate from the indigenous Celtic peoples of the 
-    # British Isles (Ireland, Wales, Scotland) and have survived as living cultural 
-    # languages to this day, despite the dominant influence of English.
+    # --- CELTIC REGION ---
+    "Irish", "Welsh",
+    # Comment: Excellent for "Telephone Game" effects, as LLMs often translate these poetically but inaccurately.
 
-    # "Naher Osten / Nordafrika": 
-    "Arabic", "Hebrew", "Persian", "Turkish", "Urdu",
-    # Comment: Arabic and Hebrew are Semitic languages from the Afroasiatic 
-    # family. Persian (Iran) and Urdu (Pakistan) are Indo-Iranian languages and thus 
-    # Indo-European (related to European languages). Turkish belongs to an entirely 
-    # different family, the Turkic languages, but uses the Latin alphabet today.
+    # --- MIDDLE EAST & NORTH AFRICA ---
+    "Arabic", "Hebrew", "Persian", "Turkish", "Egyptian Arabic",
+    # Comment: Shifts the logic to Semitic writing systems and agglutinative grammar (Turkish).
 
-    #"Kaukasus"
-    "Georgian", "Armenian",
-    # Comment: A region of extreme linguistic diversity. Armenian is an 
-    # independent branch of the Indo-European languages. Georgian belongs to the South Caucasian 
-    # (Kartvelian) language family and uses its own unique, beautiful alphabet.
+    # --- CAUCASUS & CENTRAL ASIA ---
+    "Georgian", "Armenian", "Kazakh", "Uzbek",
+    # Comment: Kazakh and Uzbek introduce Central Asian structural patterns.
 
-    #"Zentralasien"
-    "Kazakh", "Uzbek", "Azerbaijani", "Mongolian",
-    # Comment: Kazakh, Uzbek, and Azerbaijani are closely related Turkic languages 
-    # spoken across a vast territory from Eastern Europe to Western China. Mongolian 
-    # forms its own language family in the east of this region.
+    # --- SOUTH ASIA (Indian Subcontinent) ---
+    "Hindi", "Bengali", "Tamil", "Telugu", "Marathi", "Urdu", "Nepali", "Sinhala",
+    # Comment: Heavy mix of Indo-Aryan (Northern) and Dravidian (Southern) languages. Gemma 4 is highly capable here.
 
-    # "Südasien (Indischer Subkontinent)"
-    "Hindi", "Bengali", "Tamil", "Telugu", "Marathi", "Punjabi",
-    # Comment: India is linguistically divided. The north speaks Indo-Iranian languages 
-    # (Hindi, Bengali, Marathi, Punjabi), which are distant cousins of European languages. 
-    # The south speaks Dravidian languages (Tamil, Telugu), which form a completely independent 
-    # language family with no connection to Indo-European.
-
-    # "Ostasien": 
+    # --- EAST ASIA ---
     "Mandarin", "Cantonese", "Japanese", "Korean", "Tibetan",
-    # Comment: Mandarin and Cantonese are Sinitic languages from China; Tibetan is 
-    # closely related to them. Japanese and Korean, on the other hand, are grammatically structured 
-    # completely differently, and their exact origin or relationship remains controversial in 
-    # linguistic research to this day (often classified as isolated language families).
+    # Comment: Entirely different sentence structures (e.g., Subject-Object-Verb in Japanese/Korean).
 
-    # "Südostasien"
-    "Thai", "Vietnamese", "Indonesian", "Malay", "Tagalog", "Burmese", "Khmer", "Lao",
-    # Comment: A melting pot of language families. Thai and Lao belong together, just like 
-    # Vietnamese and Khmer (Austroasiatic). Indonesian, Malay, and Tagalog (Philippines) 
-    # belong to the Austronesian language family, which stretches across the entire archipelago.
+    # --- SOUTHEAST ASIA ---
+    "Thai", "Vietnamese", "Indonesian", "Tagalog", "Burmese", "Khmer", "Malay",
+    # Comment: Tonal languages (Thai/Vietnamese) vs. Malayo-Polynesian languages (Indonesian) cause great semantic shifts.
 
-    # "Subsahara-Afrika": [
-    "Swahili", "Amharic", "Yoruba", "Zulu", "Xhosa", "Afrikaans", "Hausa", "Igbo", "Somali",
-    # Comment: Swahili, Yoruba, Zulu, Igbo, and Xhosa (known for its click sounds) belong 
-    # to the massive Niger-Congo language family. Amharic (Ethiopia) and Somali are Afroasiatic. 
-    # Afrikaans is a European peculiarity: it developed in the 17th century from Dutch, 
-    # which was brought to South Africa by settlers.
+    # --- SUB-SAHARAN AFRICA ---
+    "Swahili", "Amharic", "Yoruba", "Zulu", "Xhosa", "Hausa", "Igbo", "Somali", "Oromo", "Shona",
+    # Comment: Massive diversity. Swahili and Zulu use complex noun class systems that easily confuse Western-centric LLM logics.
 
-    # "Pazifik / Ozeanien": [
+    # --- PACIFIC & OCEANIA ---
     "Maori", "Samoan", "Hawaiian",
-    # Comment: These languages all belong to the Polynesian subgroup of the Austronesian 
-    # languages. They show the fascinating historical migration by boat across thousands 
-    # of kilometers in the Pacific Ocean (from New Zealand to Hawaii).
+    # Comment: Polynesian languages often have a very small phoneme inventory, heavily distorting words.
 
-    # "Indigene Sprachen Amerikas": [
-    "Quechua", "Guarani"
-    # Comment: Remnants of the great pre-Columbian civilizations. Quechua was the 
-    # language of the Inca Empire in the Andes of South America. Today, Guarani is an 
-    # official language in Paraguay alongside Spanish and is spoken by the majority of the population there.
+    # --- INDIGENOUS LANGUAGES OF THE AMERICAS ---
+    "Quechua", "Guarani", "Nahuatl", "Mayan"
+    # Comment: Nahuatl (Aztec) and Mayan are included as Gemma 4 possesses an impressive historical text corpus for them.
 ]
 
+# GENRE (dict[str, str]): A map linking structural numerical strings to story genres.
 GENRE: dict[str, str] = {
     "1": "Science Fiction",
     "2": "Fantasy",
@@ -120,38 +91,75 @@ GENRE: dict[str, str] = {
     "14": "Cosmic Horror"
 }
 
+
+# --- UTILITY AND GENERATION FUNCTIONS ---
+
 def choose_genre() -> str:
+    """
+    Displays the mapped dictionary of genres and prompts the user via CLI to choose one.
+
+    Variables:
+    - choice (str): Holds the user's raw menu selection string. Acts as the validation check.
+    - nummer (str): The current loop iteration key representing the selection number.
+    - genre (str): The current loop iteration value representing the genre text name.
+    """
+    choice: str = ""
+    # Continue looping until the user submits a valid numeric index present in the GENRE dictionary
     while choice not in GENRE:
+        # Loop through and present all menu configuration options cleanly to the user
         for nummer, genre in GENRE.items():
             print(f"{nummer}: {genre}")
+            
         choice = input(f"Please select a genre (1-{len(GENRE)}): ").strip()
+        
+        # Validation feedback step
         if choice not in GENRE:
             print("Invalid choice. Please type a number from the list.")
 
     return GENRE[choice]
 
 def choose_startingwords() -> str:
+    """
+    Collects a set of 5 seed words from the user via CLI prompts.
+
+    Variables:
+    - word_list (list[str]): An initially empty list populated with validated input words.
+    - i (int): Loop index track counter keeping track of the current collected word count.
+    - user_input (str): The raw string captured from the command line prompt, stripped of outer spaces.
+    """
     word_list = []
     print("With which random words should the story get generated?")
     
+    # Loop strictly 5 times to gather exactly 5 distinct words
     for i in range(5):
         while True:
-            # Eingabe einlesen und direkt die Leerzeichen am Anfang/Ende wegschneiden
+            # Read input and instantly clear out leading or trailing whitespaces
             user_input = input(f"Please input the word {i+1}: ").strip()
             
+            # Reject inputs that contain empty string blocks or spaces entirely
             if user_input == "":
                 print("An empty string or a string containing only spaces doesn't carry any meaning.")
-                # Die Schleife läuft weiter, bis eine gültige Eingabe kommt
-                continue  
+                continue  # Force the loop to ask for this word index again
             
-            # Wenn das Wort gültig ist, fügen wir es der Liste hinzu und brechen die while-Schleife ab
+            # Append valid word entry and break out of inner validation loop
             word_list.append(user_input)
             break
             
+    # Combine the collected word list entries into a single semicolon-delimited string
     return "; ".join(word_list)
 
-def generate_story(genre:str, words:str) -> str:
-    
+def generate_story(genre: str, words: str) -> str:
+    """
+    Interfaces with the local Ollama instance to construct a narrative context 
+    based on the selected genre and starting keywords.
+
+    Variables:
+    - genre (str): The chosen structural thematic style for the story.
+    - words (str): The semicolon-separated string containing the 5 required narrative seed words.
+    - prompt (str): The structured string payload outlining the task context and linguistic safety parameters.
+    - story (dict): The raw response dictionary returned from the local Ollama system framework.
+    """
+    # Construct a highly specialized prompt to force linguistic matching to seed words and block introductory fluff
     prompt = (
         f"You are a multilingual author who writes brilliant stories worldwide.\n"
         f"TASK:\n"
@@ -164,12 +172,14 @@ def generate_story(genre:str, words:str) -> str:
         f"Story:"
     )
 
+    # Dispatch request payload configurations directly to the active Ollama container engine
     story = ollama.generate(
         model=MODEL,
         prompt=prompt,
         options={
-            'temperature': 0.9
+            # Temperature balanced at 0.8 to provide creative phrase variety while maintaining readable narrative logic
+            'temperature': 0.8 
         }
     )
+    # Return the clean generation string, stripping accidental outer whitespace artifacts
     return story['response'].strip()
-    
