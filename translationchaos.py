@@ -152,3 +152,28 @@ def translation_chaos(start_wort: str, runden: int, outputlanguage: str) -> None
         final_text = translate_lokal(text, outputlanguage)
         
     print("-"*30 + f"\nThe final result in {outputlanguage}: {final_text}")
+
+# Test how different languages in the input texts will get translated
+if __name__ == "__main__":
+    # Test if the translation of the Input text will be somewhat coherent in different input languages
+    print("Only German")
+    translation_chaos("Ich gehe morgen in den Supermarkt und kaufe etwas frisches Gemüse für das Abendessen.", 1, "German")
+
+    print("Only English")
+    translation_chaos("I am going to the supermarket tomorrow and buying some fresh vegetables for dinner.", 1, "German")
+
+    # Test how the model handle a text with different languages, where the differnt languages are nearly 50/50 of the text.
+    print("Mixed")
+    translation_chaos("Ich gehe morgen to the supermarket und kaufe some fresh vegetables für das Abendessen.", 1, "German")
+
+
+    # Test if the translation of the Input text will be somewhat coherent in different input languages, even with an higher translation count
+    print("Only German")
+    translation_chaos("Ich gehe morgen in den Supermarkt und kaufe etwas frisches Gemüse für das Abendessen.", 20, "German")
+
+    print("Only English")
+    translation_chaos("I am going to the supermarket tomorrow and buying some fresh vegetables for dinner.", 20, "German")
+
+    # Test how the model handle a text with different languages, where the differnt languages are nearly 50/50 of the text.
+    print("Mixed")
+    translation_chaos("Ich gehe morgen to the supermarket und kaufe some fresh vegetables für das Abendessen.", 20, "German")

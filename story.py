@@ -166,20 +166,27 @@ def generate_story(genre: str, words: str) -> str:
         f"Write a creative story in the genre '{genre}' incorporating these 5 words: {words}\n\n"
         f"SAFETY & LANGUAGE RULES:\n"
         f"1. IDENTIFY THE DOMINANT LANGUAGE: Analyze the 5 input words. Determine which language they primarily belong to (e.g., German, Japanese, Mandarin, Zulu, English).\n"
-        f"2. OUTPUT LANGUAGE: You MUST write the entire story in that identified language. If the words are in Zulu, the story must be in Zulu. Do NOT translate the user's words into English.\n"
-        f"3. MIXED LANGUAGES: If the words are a mix of languages (e.g., Denglish), default to the language of the majority of the words, or the language that makes the most sense for a cohesive narrative.\n"
-        f"4. NO EXTRA TEXT: Output ONLY the story. No introduction, no explanations, no 'Here is your story in German:'.\n\n"
+        f"2. OUTPUT LANGUAGE: You MUST write the entire story in that identified language. Do NOT write the story in English unless English is the dominant language.\n"
+        f"3. MIXED LANGUAGES & TRANSLATION LOGIC: If the input words are a mix of languages, you must integrate them into the dominant language based on these strict rules:\n"
+        f"   - TRANSLATE basic vocabulary: If an input word is a basic, common word in a foreign language, you MUST translate it into the dominant language so the story flows naturally.\n"
+        f"   - DO NOT TRANSLATE loanwords/slang: If a foreign word is commonly used as a loanword or modern slang in the dominant language (e.g., 'weird', 'cool', 'chill' in German), keep it exactly as it is.\n"
+        f"   - POETIC/EXOTIC INTEGRATION: If a word is in a completely different script or language that cannot be directly translated without losing its flair, integrate it grammatically into the sentence structure of the dominant language.\n"
+        f"4. NO EXTRA TEXT: Output ONLY the story. No introduction, no explanations, no 'Here is your story:'.\n\n"
         f"Story:"
     )
+    safeguard: str = ""
 
-    # Dispatch request payload configurations directly to the active Ollama container engine
-    story = ollama.generate(
-        model=MODEL,
-        prompt=prompt,
-        options={
-            # Temperature balanced at 0.8 to provide creative phrase variety while maintaining readable narrative logic
-            'temperature': 0.8 
-        }
-    )
+    while safeguard == "":
+        # Dispatch request payload configurations directly to the active Ollama container engine
+        story = ollama.generate(
+            model=MODEL,
+            prompt=prompt,
+            options={
+                # Temperature balanced at 0.8 to provide creative phrase variety while maintaining readable narrative logic
+                'temperature': 0.8 
+            }
+        )
+        safeguard = story['response'].strip()
+
     # Return the clean generation string, stripping accidental outer whitespace artifacts
-    return story['response'].strip()
+    return safeguard

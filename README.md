@@ -1,12 +1,12 @@
-# Inefficient Password Generator
+# The Most Inefficient Password Generator
 
-A totally necessary, venture-capital-baiting, and buzzword-packed password generator slapped on top of a local Large Language Model (or "Chatbot", if we are being honest) to maximize corporate synergy and linguistic disruption. 
+A totally necessary, venture-capital-baiting, and buzzword-packed password generator slapped on top of a local Large Language Model (or "chatbot", if we are being honest) to maximize corporate synergy and linguistic disruption.
 
-Instead of using traditional, lightweight, and actually secure random number generators that complete the task in microseconds without consuming the electrical grid of a small nation, this project leverages **local AI translation loops (the "Telephone Game")** to burn CPU cycles and extract password entropy from pure AI confusion. 
+Instead of using traditional, lightweight, and boringly proven-to-be-secure random number generators that complete the task in microseconds without consuming two weeks' worth of electricity for an average PC user per password, this project leverages local AI translation loops (the "Telephone Game") to burn CPU and GPU cycles and extract password entropy from pure AI confusion.
 
-I built it because I hope that the nonexisting stock price of my non-existing company jumps into the sky because I say, that I created a passwordgenerator that uses AI, unless I'm too late for that hype.
+I built it in the desperate hope that the non-existent stock price of my non-existent company will skyrocket just because I can say I created a password generator that truly uses AI - assuming I'm not already too late for the hype train.
 
-Are the generated passwords secure? I don't know, I'm not a security researcher, but I can say, that I have a passwordgenerator with AI and the investors will invest in my non-existing company, so I don't care.
+Are the generated passwords secure? I have no idea - I'm not a security researcher. But what I do know is that I have an AI-powered password generator, which means investors will flock to my non-existent company anyway. So frankly, I don't care.
 
 ---
 
@@ -54,7 +54,7 @@ By default, the project uses `gemma4:12b` for its robust multilingual training c
 ollama run gemma4:12b
 ```
 
-**Hardware Note:** If your machine lacks a dedicated GPU or has less than 8GB of VRAM and less than 16GB of RAM, you can change the MODEL variable inside story.py to a smaller alternative (e.g., llama3:8b or phi3). Avoid models smaller than 7B parameter sizes, as they tend to "forget" the strict translation constraints and output conversational filler.
+**Hardware Note:** If your machine lacks a dedicated GPU or has less than 8GB of VRAM and less than 32GB of RAM, you can change the MODEL variable inside story.py to a smaller alternative (e.g., llama3:8b or phi3). Avoid models smaller than 7B parameter sizes, as they tend to "forget" the strict translation constraints and output conversational filler.
 
 3. Install Python Dependencies
 
@@ -84,4 +84,4 @@ python main.py
 
 While modern cryptographic infrastructure values speed and proven security, this system deliberately spins up billions of mathematical matrix multiplications across your computer hardware over dozens of full neural-network inference cycles.
 
-Depending on your hardware architecture (CPU vs. GPU) your translation loop settings and chosen model, generating a single password may take anywhere from a few seconds to several hours. It provides a completely unique, unpredictable entropy footprint born from AI cognitive degradation—at the cost of traditional computing efficiency.
+Depending on your hardware architecture (CPU vs. GPU) your translation loop settings and chosen model, generating a single password may take anywhere from a few minutes to several hours, mabe even days, but the limits aren't tested yet. It provides a completely unique, unpredictable entropy footprint born from AI cognitive degradation—at the cost of traditional computing efficiency.

@@ -39,26 +39,30 @@ if __name__ =="__main__":
     story: str = ""
     translations_rounds: int = 0
     final_password: str = ""
+    password_length: int
 
     # Sequence of interactive user configuration inputs
-    password_length: int = choose_password_length()
     output_choice: str = get_user_mode()
     words: str = choose_startingwords()
     genre: str = choose_genre()
-
-    # Capture and safeguard the number of translation iterations
-    translations_rounds = int(input("How often do you want the translations_rounds to happen? To see real entropy through the translations, you should use something higher than 10."))
-    if not translations_rounds:
-            print("No input detected. Using the default of 40 rounds.")
-            translations_rounds = 40
     
-    if translations_rounds < 1:
-        print("The translation rounds is too low. It will get set to the default of 40 rounds")
+    # Capture and safeguard the number of translation iterations
+    eingabe: str = input("How often do you want the translations_rounds to happen? To see real entropy through the translations, you should use something higher than 10. ").strip()
+    if eingabe == "":
+        print("No input detected. Using the default of 40 rounds.")
         translations_rounds = 40
+    else:
+        try:
+            translations_rounds = int(eingabe)
+        except ValueError:
+            print("Das war keine gültige Zahl! Bitte versuchen Sie es erneut.")
+            translations_rounds = 40
 
     # Conditional step: Only ask for a target language if the user actually wants to read the final story text
     if output_choice == "story":
         output_language = choose_language()
+    else:
+        password_length = choose_password_length()
 
     # Core generation step: Create the baseline story context using the chosen options
     story = generate_story(genre, words)
