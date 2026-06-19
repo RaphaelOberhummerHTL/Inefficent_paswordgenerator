@@ -58,9 +58,21 @@ ollama run gemma4:12b
 
 3. Install Python Dependencies
 
-Install the official Ollama integration wrapper:
+### 3. Install Python Dependencies
+
+The project requirements are split into core execution dependencies and optional testing tools.
+
+#### Core Dependencies
+Required for the story generation, translation loop, and the password generator:
 ```bash
-pip install ollama psutil
+pip3 install ollama psutil --user
+```
+
+#### Testing Dependencies (Optional)
+
+Required only if you want to run the unit tests and analyze the password entropy or bias footprint:
+```bash
+pip3 install scipy --user
 ```
 
 ### 🎮 Usage
@@ -68,6 +80,11 @@ pip install ollama psutil
 Run the master script directly from your terminal:
 ```bash
 python main.py
+```
+
+Run the unitests directly from your terminal, it will supress the regular output of the functions:
+```bash
+python3 -m unittest -b tests.py
 ```
 
 #### Execution Steps:

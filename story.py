@@ -98,10 +98,8 @@ def choose_genre() -> str:
     """
     Displays the mapped dictionary of genres and prompts the user via CLI to choose one.
 
-    Variables:
-    - choice (str): Holds the user's raw menu selection string. Acts as the validation check.
-    - nummer (str): The current loop iteration key representing the selection number.
-    - genre (str): The current loop iteration value representing the genre text name.
+    Returns:
+        str: The name of the genre corresponding to the user's validated selection.
     """
     choice: str = ""
     # Continue looping until the user submits a valid numeric index present in the GENRE dictionary
@@ -122,10 +120,8 @@ def choose_startingwords() -> str:
     """
     Collects a set of 5 seed words from the user via CLI prompts.
 
-    Variables:
-    - word_list (list[str]): An initially empty list populated with validated input words.
-    - i (int): Loop index track counter keeping track of the current collected word count.
-    - user_input (str): The raw string captured from the command line prompt, stripped of outer spaces.
+    Returns:
+        str: A single string containing the 5 collected words, separated by semicolons.
     """
     word_list = []
     print("With which random words should the story get generated?")
@@ -153,11 +149,14 @@ def generate_story(genre: str, words: str) -> str:
     Interfaces with the local Ollama instance to construct a narrative context 
     based on the selected genre and starting keywords.
 
-    Variables:
-    - genre (str): The chosen structural thematic style for the story.
-    - words (str): The semicolon-separated string containing the 5 required narrative seed words.
-    - prompt (str): The structured string payload outlining the task context and linguistic safety parameters.
-    - story (dict): The raw response dictionary returned from the local Ollama system framework.
+    Args:
+        genre (str): The chosen structural thematic style for the story.
+        words (str): The semicolon-separated string containing the 5 required 
+            narrative seed words.
+
+    Returns:
+        str: The clean generated story from the model, stripped of leading 
+            and trailing whitespaces.
     """
     # Construct a highly specialized prompt to force linguistic matching to seed words and block introductory fluff
     prompt = (
@@ -190,3 +189,21 @@ def generate_story(genre: str, words: str) -> str:
 
     # Return the clean generation string, stripping accidental outer whitespace artifacts
     return safeguard
+
+def choose_language() -> str:
+    """
+    Prompts the user via CLI to choose a valid output language from the available list.
+
+    Returns:
+        str: The validated, capitalized target language chosen by the user.
+    """
+    output_language: str = ""
+    # Loop until the user provides a language that exists in story.LANGUAGES
+    while output_language.strip().title() not in LANGUAGES:
+        print("In which language do you want the output to be?")
+        
+        # Format and display the available languages in a clean grid (8 columns)
+        languages_grid = "".join(f"{lang:<15}" + ("\n" if (i+1) % 8 == 0 else "") for i, lang in enumerate(LANGUAGES))
+        
+        output_language = input(f"Here are the available languages:\n{languages_grid}\n\nDeine Auswahl: ").capitalize()
+    return output_language

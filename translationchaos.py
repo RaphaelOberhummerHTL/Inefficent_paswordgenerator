@@ -11,11 +11,13 @@ def translate_lokal(text, output_language) -> str:
     Translates a given text into the target language using a local Ollama model.
     Enforces strict output rules via prompting.
 
-    Variables:
-    - text (str): The input string/sentence that needs to be translated.
-    - output_language (str): The target language for the translation.
-    - prompt (str): The structured instruction sent to Ollama to enforce strict output formatting.
-    - response (dict): The raw JSON/dictionary payload returned by the Ollama API.
+    Args:
+        text (str): The input string/sentence that needs to be translated.
+        output_language (str): The target language for the translation.
+
+    Returns:
+        str: The cleaned, translated text from the model, stripped of leading 
+            and trailing whitespaces.
     """
     # Construct a strict system prompt to ensure the model only returns the raw translation
     prompt = (
@@ -45,11 +47,13 @@ def translation_saveguard(text: str, language: str = "") -> str:
     Ensures a valid translation is received. If Ollama returns an empty string,
     it retries until a successful translation is generated.
 
-    Variables:
-    - text (str): The original text to be translated.
-    - language (str): The optional target language. Defaults to an empty string.
-    - new_text (str): Stores the translation result; acts as the safety check variable.
-    - given_language (bool): Flag indicating if a specific language was forced by the caller.
+    Args:
+        text (str): The original text to be translated.
+        language (str, optional): The target language. If left empty, a random 
+            language from the supported list will be chosen. Defaults to "".
+
+    Returns:
+        str: The successfully translated text.
     """
     new_text: str = ""
     given_language: bool = False
@@ -72,65 +76,71 @@ def translation_saveguard(text: str, language: str = "") -> str:
 
     return new_text
 
-def randimasation_through_translation(start_wort: str, runden: int) -> str:
+def randimasation_through_translation(start_text: str, translation_rounds: int) -> str:
     """
     Passes a word through multiple rounds of random translations (like a game of Telephone)
     to intentionally introduce semantic drift and randomization.
 
-    Variables:
-    - start_wort (str): The initial word or sentence to begin the chain with.
-    - runden (int): The total number of translation cycles to perform.
-    - new_text (str): Tracks the mutating text across the loop iterations.
-    - i (int): Loop index counter for the current round.
+    Args:
+        start_text (str): The initial word or sentence to begin the chain with.
+        translation_rounds (int): The total number of translation cycles to perform.
+
+    Raises:
+        ValueError: If `translation_rounds` is less than 1 or `start_text` is empty/whitespaces only.
+
+    Returns:
+        str: The final mutated text after all translation rounds are completed.
     """
-    new_text: str = start_wort
+
+    if translation_rounds < 1:
+        raise ValueError("The number of translation rounds must be at least 1.")
     
-    # Iteratively translate the text 'runden' times using random languages
-    for i in range(runden):
+    if start_text.strip() == "":
+        raise ValueError("The input text can't contain only whitespaces or be empty.")
+    
+    new_text: str = start_text
+    
+    # Iteratively translate the text 'translation_rounds' times using random languages
+    for i in range(translation_rounds):
         new_text = translation_saveguard(new_text)
+        print(f"Translation {i+1} out of {translation_rounds} finished")
 
     return new_text
 
-def choose_language() -> str:
-    """
-    Prompts the user via CLI to choose a valid output language from the available list.
-
-    Variables:
-    - output_language (str): The user's input choice, formatted to capitalized text.
-    - languages_grid (str): A dynamically generated string displaying the language list in an 8-column grid.
-    - lang (str): Iterator variable for individual languages during string formatting.
-    - i (int): Iterator index used to calculate line breaks for the grid layout.
-    """
-    output_language: str = ""
-    # Loop until the user provides a language that exists in story.LANGUAGES
-    while output_language.capitalize() not in story.LANGUAGES:
-        print("In which language do you want the output to be?")
-        
-        # Format and display the available languages in a clean grid (8 columns)
-        languages_grid = "".join(f"{lang:<15}" + ("\n" if (i+1) % 8 == 0 else "") for i, lang in enumerate(story.LANGUAGES))
-        
-        output_language = input(f"Here are the available languages:\n{languages_grid}\n\nDeine Auswahl: ").capitalize()
-    return output_language
-
-def translation_chaos(start_wort: str, runden: int, outputlanguage: str) -> None:
+def translation_chaos(start_text: str, translation_rounds: int = 5, outputlanguage: str = "English") -> str:
     """
     Executes the 'Telephone game' translation process, prints the intermediate 
     language steps, and translates the final chaotic result back to the user's chosen language.
 
-    Variables:
-    - start_wort (str): The initial user input string.
-    - runden (int): The number of chaotic translation iterations.
-    - outputlanguage (str): The final target language the user wants to read.
-    - text (str): Holds and updates the progressively chaotic text through the loop.
-    - i (int): Loop index tracking the current round number.
-    - language (str): Stores the randomly selected language for the current loop cycle.
-    - final_text (str): The final output string translated back to the user's chosen outputlanguage.
+    Args:
+        start_text (str): The initial user input string to be translated.
+        translation_rounds (int, optional): The number of chaotic translation iterations. 
+            Defaults to 5.
+        outputlanguage (str, optional): The final target language the user wants to read. 
+            Defaults to "English".
+
+    Raises:
+        ValueError: If `translation_rounds` is less than 1 or `start_text` is empty/whitespaces only.
+
+    Returns:
+        str: The final output string translated back to the user's chosen outputlanguage.
     """
-    text: str = start_wort
+    if translation_rounds < 1:
+        raise ValueError("The number of translation rounds must be at least 1.")
+    
+    if outputlanguage.strip() == "" or outputlanguage not in story.LANGUAGES:
+        outputlanguage = "English"
+    
+    if start_text.strip() == "":
+        raise ValueError("The input text can't contain only whitespaces or be empty.")
+
+    text: str = start_text
+    final_text: str = ""
+
     print(f"Start: {text}\n" + "-"*30)
     
-    # Multi-round random translation loop
-    for i in range(runden):
+    # Multi-round random translation loop. The last translation round is into the outputlanguage.
+    for i in range(translation_rounds-1):
 
         # Seed = current_time + uptime 
         #      = time.time() + (time.time() - boot_time)
@@ -145,35 +155,35 @@ def translation_chaos(start_wort: str, runden: int, outputlanguage: str) -> None
         text = translation_saveguard(text, language)
         
         print(f"Runde {i+1}: Übersetzt nach [{language}] -> {text}")
+
         
     # Final step: Translate the completely randomized text back to the desired output language
-    final_text: str = ""
     while final_text == "":
-        final_text = translate_lokal(text, outputlanguage)
+        final_text = translation_saveguard(text, outputlanguage)
         
-    print("-"*30 + f"\nThe final result in {outputlanguage}: {final_text}")
+    return final_text
 
 # Test how different languages in the input texts will get translated
 if __name__ == "__main__":
     # Test if the translation of the Input text will be somewhat coherent in different input languages
     print("Only German")
-    translation_chaos("Ich gehe morgen in den Supermarkt und kaufe etwas frisches Gemüse für das Abendessen.", 1, "German")
+    print("-"*30 + f"\nThe final result in German: {translation_chaos("Ich gehe morgen in den Supermarkt und kaufe etwas frisches Gemüse für das Abendessen.", 1, "German")}")
 
     print("Only English")
-    translation_chaos("I am going to the supermarket tomorrow and buying some fresh vegetables for dinner.", 1, "German")
+    print("-"*30 + f"\nThe final result in German: {translation_chaos("I am going to the supermarket tomorrow and buying some fresh vegetables for dinner.", 1, "German")}")
 
     # Test how the model handle a text with different languages, where the differnt languages are nearly 50/50 of the text.
     print("Mixed")
-    translation_chaos("Ich gehe morgen to the supermarket und kaufe some fresh vegetables für das Abendessen.", 1, "German")
+    print("-"*30 + f"\nThe final result in German: {translation_chaos("Ich gehe morgen to the supermarket und kaufe some fresh vegetables für das Abendessen.", 1, "German")}")
 
 
     # Test if the translation of the Input text will be somewhat coherent in different input languages, even with an higher translation count
     print("Only German")
-    translation_chaos("Ich gehe morgen in den Supermarkt und kaufe etwas frisches Gemüse für das Abendessen.", 20, "German")
+    print("-"*30 + f"\nThe final result in German: {translation_chaos("Ich gehe morgen in den Supermarkt und kaufe etwas frisches Gemüse für das Abendessen.", 20, "German")}")
 
     print("Only English")
-    translation_chaos("I am going to the supermarket tomorrow and buying some fresh vegetables for dinner.", 20, "German")
+    print("-"*30 + f"\nThe final result in German: {translation_chaos("I am going to the supermarket tomorrow and buying some fresh vegetables for dinner.", 20, "German")}")
 
     # Test how the model handle a text with different languages, where the differnt languages are nearly 50/50 of the text.
     print("Mixed")
-    translation_chaos("Ich gehe morgen to the supermarket und kaufe some fresh vegetables für das Abendessen.", 20, "German")
+    print("-"*30 + f"\nThe final result in German: {translation_chaos("Ich gehe morgen to the supermarket und kaufe some fresh vegetables für das Abendessen.", 20, "German")}")

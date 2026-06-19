@@ -2,7 +2,6 @@ import time
 
 from passwordgenerator import password
 from passwordgenerator import choose_password_length
-from translationchaos import choose_language
 from translationchaos import translation_chaos
 from translationchaos import translate_lokal
 
@@ -10,14 +9,16 @@ from story import choose_genre
 from story import choose_startingwords
 from story import generate_story
 from story import LANGUAGES
+from story import choose_language
 
 def get_user_mode() -> str:
     """
     Prompts the user via CLI to choose between exploring the story translation chaos 
     or directly generating a chaotic password.
 
-    Variables:
-    - choice (str): Holds the user's raw menu selection string. Used for validation checking.
+    Returns:
+        str: A clean string keyword ("story" or "password") reflecting the chosen 
+            engine path.
     """
     print("\nWhat would you like to do?")
     print("[1] Story: See the chaotic/wrong translations of a random story")
@@ -35,10 +36,10 @@ def get_user_mode() -> str:
 
 if __name__ =="__main__":
     # Track performance entry point metrics
-    start: float = time.time()
     story: str = ""
-    translations_rounds: int = 0
     final_password: str = ""
+    start: float = time.time()
+    translations_rounds: int = 0
     password_length: int
 
     # Sequence of interactive user configuration inputs
@@ -55,7 +56,7 @@ if __name__ =="__main__":
         try:
             translations_rounds = int(eingabe)
         except ValueError:
-            print("Das war keine gültige Zahl! Bitte versuchen Sie es erneut.")
+            print("That was not a valid integer. The translation rounds will be set to the default value.")
             translations_rounds = 40
 
     # Conditional step: Only ask for a target language if the user actually wants to read the final story text
