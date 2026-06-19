@@ -6,7 +6,7 @@ Instead of using traditional, lightweight, and boringly proven-to-be-secure rand
 
 I built it in the desperate hope that the non-existent stock price of my non-existent company will skyrocket just because I can say I created a password generator that truly uses AI - assuming I'm not already too late for the hype train.
 
-Are the generated passwords secure? I have no idea - I'm not a security researcher. But what I do know is that I have an AI-powered password generator, which means investors will flock to my non-existent company anyway. So frankly, I don't care.
+Are the generated passwords secure? I have no idea - I'm not a security researcher and testing for a high enough entropy and rule out any biases needed too much time for me before pushing it into the main branch. But what I do know is that I have an AI-powered password generator, which means investors will flock to my non-existent company anyway. So frankly, I don't care.
 
 ---
 
@@ -79,12 +79,12 @@ pip3 install scipy --user
 
 Run the master script directly from your terminal:
 ```bash
-python main.py
+python3 main.py
 ```
 
 Run the unitests directly from your terminal, it will supress the regular output of the functions:
 ```bash
-python3 -m unittest -b tests.py
+python3 -m unittest -b tests.py -v
 ```
 
 #### Execution Steps:

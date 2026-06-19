@@ -127,6 +127,7 @@ def password(story: str, runden: int, genre: str, words: str, passwordlength: in
             translationchaos.translation_saveguard("This is the most inefficent password generator", "Hindi")
             
             # Index boundary safeguard for processing string character pairs
+            # It got split for better readability
             if i < len(translated_story)-1:
                 val1 = ord(translated_story[randint(0, (len(translated_story)-1))])
                 val2 = (len(translated_story)+ord(translated_story[randint(0, (len(translated_story)-1))]))

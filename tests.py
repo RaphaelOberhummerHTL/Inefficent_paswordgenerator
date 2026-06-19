@@ -34,14 +34,15 @@ class TestPasswordStatisticalBias(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        print("\n--> Generating sample for bias tests (100 passwords)...")
+        print("\n--> Generating sample for bias tests (300 passwords)...")
         prompt = "Ich gehe morgen in den Supermarkt und kaufe etwas frisches Gemüse für das Abendessen."
         keywords = "morgen; Abendessen; frisches"
         
-        # For mathematical significance in passwords, 100 is usually sufficient.
+        # For mathematical significance in passwords, 300 should be sufficient 
+        # for a rough overview of the entropy and structural bias.
         cls.passwords = [
             passwordgenerator.password(prompt, 2, "Slice of Life", keywords, 10)
-            for _ in range(100)
+            for _ in range(300)
         ]
 
     def test_character_frequency_bias(self):
