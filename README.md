@@ -101,4 +101,14 @@ python3 -m unittest -b tests.py -v
 
 While modern cryptographic infrastructure values speed and proven security, this system deliberately spins up billions of mathematical matrix multiplications across your computer hardware over dozens of full neural-network inference cycles.
 
-Depending on your hardware architecture (CPU vs. GPU) your translation loop settings and chosen model, generating a single password may take anywhere from a few minutes to several hours, mabe even days, but the limits aren't tested yet. It provides a completely unique, unpredictable entropy footprint born from AI cognitive degradation—at the cost of traditional computing efficiency.
+Depending on your hardware architecture (CPU vs. GPU) your translation loop settings and chosen model, generating a single password may take anywhere from a few minutes to several hours, maybe even days, but the limits aren't tested yet. It provides a completely unique, unpredictable entropy footprint born from AI cognitive degradation—at the cost of traditional computing efficiency.
+
+#### Hardwareoverview while and after running `tests.py`
+
+While running the test:
+![Running the test](Screenshots/running_during_tests.png)
+![Systemresources under the load of test.py](Screenshots/Systemresources_during_tests.png)
+
+After the test:
+![Result the test](Screenshots/results_from_test.png)
+![Systemresources after running test.py](Screenshots/Systemresources_after_test.png)
