@@ -73,8 +73,8 @@ def password(story: str, runden: int, genre: str, words: str, passwordlength: in
     """
     translated_story: str = ""
     password: str = ""
-    number: float = 0.0
-    old_number: float = 0.0
+    number: complex = 0.0
+    old_number: complex = 0.0
     check_val: float = 0.0
     iterations: int = 0
 
