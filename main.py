@@ -48,13 +48,13 @@ if __name__ =="__main__":
     genre: str = choose_genre()
     
     # Capture and safeguard the number of translation iterations
-    eingabe: str = input("How often do you want the translations_rounds to happen? To see real entropy through the translations, you should use something higher than 10. ").strip()
-    if eingabe == "":
+    translation_rounds: str = input("How often do you want the translations rounds to happen? To see real entropy through the translations, you should use something higher than 10. ").strip()
+    if translation_rounds == "":
         print("No input detected. Using the default of 40 rounds.")
         translations_rounds = 40
     else:
         try:
-            translations_rounds = int(eingabe)
+            translations_rounds = int(translation_rounds)
         except ValueError:
             print("That was not a valid integer. The translation rounds will be set to the default value.")
             translations_rounds = 40

@@ -205,5 +205,5 @@ def choose_language() -> str:
         # Format and display the available languages in a clean grid (8 columns)
         languages_grid = "".join(f"{lang:<15}" + ("\n" if (i+1) % 8 == 0 else "") for i, lang in enumerate(LANGUAGES))
         
-        output_language = input(f"Here are the available languages:\n{languages_grid}\n\nDeine Auswahl: ").capitalize()
+        output_language = input(f"Here are the available languages:\n{languages_grid}\n\nYour input: ").capitalize()
     return output_language

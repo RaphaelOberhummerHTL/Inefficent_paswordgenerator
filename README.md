@@ -8,6 +8,11 @@ I built it in the desperate hope that the non-existent stock price of my non-exi
 
 Are the generated passwords secure? I have no idea - I'm not a security researcher and testing for a high enough entropy and rule out any biases needed too much time for me before pushing it into the main branch. But what I do know is that I have an AI-powered password generator, which means investors will flock to my non-existent company anyway. So frankly, I don't care.
 
+## ***⚠️ IMPORTANT — DO NOT USE THIS FOR REAL PASSWORDS***
+This generator is completely unverified and must be considered entirely unsafe until it has been independently analyzed and mathematicaly proven secure by multiple, independent IT-Security Researchers and/or Mathematics. As it stands, it relies on Python's random module (a non-cryptographic Mersenne-Twister PRNG) seeded with time-based values for the final character selection — meaning the output is, in principle, reproducible by anyone who can guess the seed. No amount of mathematical "chaos" upstream fixes this lack of cryptographic safety.
+
+This is a satire project about AI hype, not a security tool. For actual passwords, use secrets (Python), a vetted password manager, or any other audited generator.
+
 ---
 
 ## 💡 How It Works (The Chaos Pipeline)
@@ -100,7 +105,7 @@ Depending on your hardware architecture (CPU vs. GPU plus the generation of it),
 
 ### Hardware Footprint While and After Running tests.py
 
-While running the test:
+While running the test (ran on the night from the 19th of June to the 20th of June, started on the afternoon of the 19th of June):
 ![Running the test](Screenshots/running_during_tests.png)
 ![Systemresources under the load of test.py](Screenshots/Systemresources_during_tests.png)
 
