@@ -154,12 +154,11 @@ def translation_chaos(start_text: str, translation_rounds: int = 5, outputlangua
         # Fixed logic step: text updates dynamically each round
         text = translation_saveguard(text, language)
         
-        print(f"Runde {i+1}: Übersetzt nach [{language}] -> {text}")
+        print(f"Runde {i+1}: Übersetzt nach [{language}] -> {text}\n" + "-"*30)
 
         
     # Final step: Translate the completely randomized text back to the desired output language
-    while final_text == "":
-        final_text = translation_saveguard(text, outputlanguage)
+    print(f"Final text is: {translation_saveguard(text, outputlanguage)}")
         
     return final_text
 

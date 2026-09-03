@@ -47,6 +47,17 @@ The project is split into four modular Python scripts:
 
 ## 🚀 Prerequisites & Installation
 
+### 0. Installing Python (Only if you don't have it already installed)
+Because it's a Python project, you need to install Python. There a two ways:
+* Installing it from the website [www.python.org/downloads](https://www.python.org/downloads/)
+
+or
+
+* Installing it over your lokal packet manager in the terminal (you need to be Admin/root for that, or at least knowing the Admin/root Password from your local Admin/root account):
+  * `winget install python` on Windows (open the terminal as Administrator)
+  * `brew install python` on MacOS
+  * your Linux packet manager of your Distro if it shouldn't be installed for some weird reasons
+
 ### 1. Install Ollama
 Since this project requires local inference, you must have **Ollama** installed on your system.
 * Download it from [ollama.com](https://ollama.com)

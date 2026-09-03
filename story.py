@@ -88,29 +88,114 @@ GENRE: dict[str, str] = {
     "11": "Young Adult",
     "12": "Coming of Age",
     "13": "Slice of Life",
-    "14": "Cosmic Horror"
+    "14": "Cosmic Horror",
+    "15": "Action",
+    "16": "Adventure",
+    "17": "Crime",
+    "18": "Historical Fiction",
+    "19": "Drama",
+    "20": "Dystopia",
+    "21": "Post-Apocalyptic",
+    "22": "Urban Fantasy",
+    "23": "Steampunk",
+    "24": "Satire",
+    "25": "Parody",
+    "26": "Magical Realism",
+    "27": "Gothic",
+    "28": "Noir",
+    "29": "Political Fiction",
+    "30": "Western",
+    "31": "Mythology",
+    "32": "Espionage",
+    "33": "Biographical",
+    "34": "Historical Romance",
+    "35": "Supernatural",
+    "36": "Time Travel",
+    "37": "Alternate History",
+    "38": "Epic",
+    "39": "Satirical Fantasy",
+    "40": "Dark Comedy",
+    "41": "Psychological Thriller",
+    "42": "Romantic Comedy",
+    "43": "Science Fantasy",
+    "44": "Space Opera",
+    "45": "Military Fiction",
+    "46": "Legal Thriller",
+    "47": "Medical Drama",
+    "48": "Political Satire",
+    "49": "Environmental Fiction",
+    "50": "Experimental Fiction",
+    "51": "Gothic Romance",
+    "52": "Hardboiled Noir",
+    "53": "Urban Thriller",
+    "54": "High Fantasy Epik",
+    "55": "Low Fantasy",
+    "56": "Sword and Sorcery",
+    "57": "Heroic Fantasy", 
+    "58": "Dark Fantasy",
+    "59": "Romantic Fantasy",
+    "60": "Historical Mystery",
+    "61": "Paranormal Romance",
+    "62": "Science Fiction Mystery",
+    "63": "Fantasy Mystery",
+    "64": "Romantic Suspense",
+    "65": "Psychological Horror",
+    "66": "Supernatural Thriller",
+    "67": "Historical Thriller",
+    "68": "Political Thriller",
+    "69": "True Crime Podcast",
+    "70": "Historical Drama",
+    "71": "Groschenroman",
+    "72": "Pulp Romance",
+    "73": "Hardboiled Noir Detective",
+    "74": "Bureaucracy",
+    "75": "Corporate Buzzword",
+    "76": "PR",
+    "77": "Clickbait",
+    "78": "Influencer Drama",
+    "79": "Teleshopping",
+    "80": "Infomercial",
+    "81": "Gothic Horror",
+    "82": "Trash B-Movie",
+    "83": "Philosophisches Manifest",
+    "84": "Kochrezept",
+    "85": "Tutorial",
+    "86": "Grimdark Fantasy",
+    "87": "Grimdark Future"
 }
 
 
 # --- UTILITY AND GENERATION FUNCTIONS ---
 
 def choose_genre() -> str:
-    """
-    Displays the mapped dictionary of genres and prompts the user via CLI to choose one.
+    """Displays the mapped dictionary of genres and prompts the user via CLI to choose one."""
+    
+    # 1. Einmalige Ausgabe des Menüs in 3 Spalten (verhindert erneutes Printen bei Fehleingabe)
+    print("\n--- Verfügbare Genres ---")
+    
+    items: list[tuple[str, str]] = list(GENRE.items())
+    num_columns: int = 3
+    num_items: int = len(items)
+    # Berechne die Zeilenanzahl für eine gleichmäßige Spaltenbefüllung
+    rows: int = (num_items + num_columns - 1) // num_columns
 
-    Returns:
-        str: The name of the genre corresponding to the user's validated selection.
-    """
+    for r in range(rows):
+        line: str = ""
+        for c in range(num_columns):
+            idx: int = r + c * rows
+            if idx < num_items:
+                num, genre = items[idx]
+                # Formatierung: Nummer 3-stellig rechtsbündig, Genre auf 28 Zeichen aufgefüllt
+                line += f"{num.rjust(3)}: {genre:<28}"
+        print(line)
+        
+    print("-" * 80)
+
+    # 2. Eingabeschleife
     choice: str = ""
-    # Continue looping until the user submits a valid numeric index present in the GENRE dictionary
     while choice not in GENRE:
-        # Loop through and present all menu configuration options cleanly to the user
-        for nummer, genre in GENRE.items():
-            print(f"{nummer}: {genre}")
-            
         choice = input(f"Please select a genre (1-{len(GENRE)}): ").strip()
         
-        # Validation feedback step
         if choice not in GENRE:
             print("Invalid choice. Please type a number from the list.")
 
@@ -205,5 +290,5 @@ def choose_language() -> str:
         # Format and display the available languages in a clean grid (8 columns)
         languages_grid = "".join(f"{lang:<15}" + ("\n" if (i+1) % 8 == 0 else "") for i, lang in enumerate(LANGUAGES))
         
-        output_language = input(f"Here are the available languages:\n{languages_grid}\n\nYour input: ").capitalize()
+        output_language = input(f"Here are the available languages:\n{languages_grid}\n\nYour choice for the output language: ").capitalize()
     return output_language
